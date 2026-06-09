@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Plan de Formation — Grégory Palluault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0ece4;
+    --muted: #7a7570;
+    --c1: #f4a623; /* orange */
+    --c2: #4ecdc4; /* teal */
+    --c3: #a78bfa; /* violet */
+    --c4: #f87171; /* rouge */
+    --c5: #34d399; /* vert */
+    --font-display: 'Outfit', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 4rem;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 3rem 5vw 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .header-left h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .header-left h1 span { color: var(--c1); }
+
+  .header-left p {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+
+  /* GLOBAL PROGRESS */
+  .global-progress {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.2rem 2rem;
+    min-width: 220px;
+    text-align: center;
+  }
+
+  .global-progress .gp-label {
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .global-progress .gp-number {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--c1);
+    line-height: 1;
+    font-family: var(--font-mono);
+  }
+
+  .global-progress .gp-bar {
+    margin-top: 0.7rem;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .global-progress .gp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c1), var(--c2));
+    border-radius: 100px;
+    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main { padding: 3rem 5vw; }
+
+  /* ── PHASE BLOCK ── */
+  .phase {
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .phase-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    border: 1.5px solid;
+    white-space: nowrap;
+  }
+
+  .phase-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .phase-timeline {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .card:hover {
+    border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+  }
+
+  .card.done {
+    opacity: 0.5;
+  }
+
+  .card.done::after {
+    content: '✓ TERMINÉ';
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--c5);
+    border: 1px solid var(--c5);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+  }
+
+  .card-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .card-check {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .card-check:hover { border-color: var(--c5); }
+  .card-check.checked {
+    background: var(--c5);
+    border-color: var(--c5);
+    color: var(--bg);
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+
+  .card-platform {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+
+  .card-desc {
+    font-size: 0.84rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .meta-tag {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    background: var(--surface2);
+    color: var(--muted);
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+
+  .card-link:hover { gap: 0.7rem; }
+
+  /* priority stripe */
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 14px 0 0 14px;
+  }
+
+  /* ── COLORS PER PHASE ── */
+  .phase-1 .phase-badge { color: var(--c1); border-color: var(--c1); }
+  .phase-1 .card::before { background: var(--c1); }
+  .phase-1 .card-link { color: var(--c1); }
+
+  .phase-2 .phase-badge { color: var(--c2); border-color: var(--c2); }
+  .phase-2 .card::before { background: var(--c2); }
+  .phase-2 .card-link { color: var(--c2); }
+
+  .phase-3 .phase-badge { color: var(--c3); border-color: var(--c3); }
+  .phase-3 .card::before { background: var(--c3); }
+  .phase-3 .card-link { color: var(--c3); }
+
+  .phase-4 .phase-badge { color: var(--c5); border-color: var(--c5); }
+  .phase-4 .card::before { background: var(--c5); }
+  .phase-4 .card-link { color: var(--c5); }
+
+  /* ── COMPETENCES RECAP ── */
+  .recap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+
+  .recap h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .recap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .recap-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .recap-label {
+    font-size: 0.78rem;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+
+  .recap-bar-bg {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .recap-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── FOOTER NOTE ── */
+  .footnote {
+    margin-top: 2rem;
+    padding: 1.2rem 1.5rem;
+    background: rgba(244,166,35,0.05);
+    border: 1px solid rgba(244,166,35,0.15);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    line-height: 1.6;
+  }
+
+  .footnote strong { color: var(--c1); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .phase-timeline { display: none; }
+    .cards { grid-template-columns: 1fr; }
+    .recap-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Mon Plan de <span>Formation</span></h1>
+    <p>// Grégory Palluault — Roadmap vers la reconversion EdTech</p>
+  </div>
+  <div class="global-progress">
+    <div class="gp-label">Progression globale</div>
+    <div class="gp-number" id="gp-number">0%</div>
+    <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- PHASE 1 -->
+  <div class="phase phase-1">
+    <div class="phase-header">
+      <span class="phase-badge">Phase 1 — Priorité critique</span>
+      <span class="phase-title">Portfolio en ligne</span>
+      <span class="phase-timeline">Semaine 1</span>
+    </div>
+    <div class="cards">
+
+      <div class="card" data-id="github-skills-intro">
+        <div class="card-top">
+          <span class="card-icon">🐙</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Introduction to GitHub</div>
+        <div class="card-platform">GitHub Skills — Anglais — ~1h</div>
+        <div class="card-desc">Comprendre les concepts de base : repo, commit, push, pull. Tu travailles directement dans de vrais dépôts GitHub, pas de simulateur.</div>
+        <div class="card-meta">
+          <span class="meta-tag">repo</span>
+          <span class="meta-tag">commit</span>
+          <span class="meta-tag">push/pull</span>
+        </div>
+        <a href="https://skills.github.com" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="github-skills-pages">
+        <div class="card-top">
+          <span class="card-icon">🌐</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">GitHub Pages</div>
+        <div class="card-platform">GitHub Skills — Anglais — ~1h</div>
+        <div class="card-desc">Mettre ton portfolio en ligne avec GitHub Pages. À la fin de ce module, ton HTML est accessible sur internet avec une vraie URL.</div>
+        <div class="card-meta">
+          <span class="meta-tag">déploiement</span>
+          <span class="meta-tag">domaine perso</span>
+          <span class="meta-tag">HTTPS</span>
+        </div>
+        <a href="https://skills.github.com" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="github-desktop">
+        <div class="card-top">
+          <span class="card-icon">🖥️</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Installer GitHub Desktop</div>
+        <div class="card-platform">desktop.github.com — Gratuit</div>
+        <div class="card-desc">Interface graphique pour Git. Tu vois tes modifications en surbrillance et tu publies sans ligne de commande. Indispensable pour démarrer sereinement.</div>
+        <div class="card-meta">
+          <span class="meta-tag">interface visuelle</span>
+          <span class="meta-tag">no terminal</span>
+        </div>
+        <a href="https://desktop.github.com" target="_blank" class="card-link">Télécharger →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase phase-2">
+    <div class="phase-header">
+      <span class="phase-badge">Phase 2 — HTML / CSS</span>
+      <span class="phase-title">Comprendre ce que tu écris déjà</span>
+      <span class="phase-timeline">Semaines 2–6</span>
+    </div>
+    <div class="cards">
+
+      <div class="card" data-id="fcc-html">
+        <div class="card-top">
+          <span class="card-icon">🎨</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Responsive Web Design</div>
+        <div class="card-platform">freeCodeCamp — Anglais — ~20h — Certifiant</div>
+        <div class="card-desc">HTML et CSS de A à Z, directement dans le navigateur. À la fin tu obtiens un certificat gratuit affichable sur LinkedIn. Certifiant et reconnu.</div>
+        <div class="card-meta">
+          <span class="meta-tag">HTML</span>
+          <span class="meta-tag">CSS</span>
+          <span class="meta-tag">Flexbox</span>
+          <span class="meta-tag">Grid</span>
+        </div>
+        <a href="https://www.freecodecamp.org/learn/2022/responsive-web-design/" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="mdn-css">
+        <div class="card-top">
+          <span class="card-icon">📖</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">MDN Web Docs — CSS</div>
+        <div class="card-platform">Mozilla — Français — Référence</div>
+        <div class="card-desc">La documentation officielle du web. Pas un cours linéaire : tu consultes quand tu bloques sur quelque chose. Garde le lien en favori.</div>
+        <div class="card-meta">
+          <span class="meta-tag">référence</span>
+          <span class="meta-tag">animations</span>
+          <span class="meta-tag">variables CSS</span>
+        </div>
+        <a href="https://developer.mozilla.org/fr/docs/Learn/CSS" target="_blank" class="card-link">Ouvrir →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase phase-3">
+    <div class="phase-header">
+      <span class="phase-badge">Phase 3 — JavaScript</span>
+      <span class="phase-title">Ne plus dépendre de l'IA pour déboguer</span>
+      <span class="phase-timeline">Mois 2–3</span>
+    </div>
+    <div class="cards">
+
+      <div class="card" data-id="fcc-js">
+        <div class="card-top">
+          <span class="card-icon">⚡</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">JavaScript Algorithms & Data Structures</div>
+        <div class="card-platform">freeCodeCamp — Anglais — ~30h — Certifiant</div>
+        <div class="card-desc">Le JavaScript que tu utilises déjà, mais expliqué et structuré. Fonctions, tableaux, objets, logique conditionnelle. Certificat LinkedIn à la clé.</div>
+        <div class="card-meta">
+          <span class="meta-tag">fonctions</span>
+          <span class="meta-tag">tableaux</span>
+          <span class="meta-tag">objets</span>
+          <span class="meta-tag">DOM</span>
+        </div>
+        <a href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures-v8/" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="odin-js">
+        <div class="card-top">
+          <span class="card-icon">⚔️</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">The Odin Project — JavaScript</div>
+        <div class="card-platform">theodinproject.com — Anglais — Projets réels</div>
+        <div class="card-desc">Plus exigeant que freeCodeCamp. Tu construis de vrais projets. À faire après freeCodeCamp si tu veux aller plus loin côté dev.</div>
+        <div class="card-meta">
+          <span class="meta-tag">projets concrets</span>
+          <span class="meta-tag">avancé</span>
+          <span class="meta-tag">optionnel</span>
+        </div>
+        <a href="https://www.theodinproject.com/paths/full-stack-javascript" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="mdn-js">
+        <div class="card-top">
+          <span class="card-icon">📖</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">MDN Web Docs — JavaScript</div>
+        <div class="card-platform">Mozilla — Français — Référence</div>
+        <div class="card-desc">Documentation officielle JS. À garder en favori pour comprendre précisément ce que fait une fonction (fetch, localStorage, addEventListener…).</div>
+        <div class="card-meta">
+          <span class="meta-tag">référence</span>
+          <span class="meta-tag">Firebase compatible</span>
+        </div>
+        <a href="https://developer.mozilla.org/fr/docs/Learn/JavaScript" target="_blank" class="card-link">Ouvrir →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase phase-4">
+    <div class="phase-header">
+      <span class="phase-badge">Phase 4 — Gestion de projet & UX</span>
+      <span class="phase-title">Parler le langage des recruteurs EdTech</span>
+      <span class="phase-timeline">Mois 4–6</span>
+    </div>
+    <div class="cards">
+
+      <div class="card" data-id="ocr-git">
+        <div class="card-top">
+          <span class="card-icon">🌿</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Gérez du code avec Git et GitHub</div>
+        <div class="card-platform">OpenClassrooms — Français — ~8h</div>
+        <div class="card-desc">Version francophone pour consolider Git. Utile si les modules anglais de GitHub Skills t'ont laissé des zones floues. Branches, merge, conflits.</div>
+        <div class="card-meta">
+          <span class="meta-tag">branches</span>
+          <span class="meta-tag">merge</span>
+          <span class="meta-tag">conflits</span>
+        </div>
+        <a href="https://openclassrooms.com/fr/courses/7162856-gerez-du-code-avec-git-et-github" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="ocr-agile">
+        <div class="card-top">
+          <span class="card-icon">🔄</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Gestion de projet Agile</div>
+        <div class="card-platform">OpenClassrooms — Français — ~6h</div>
+        <div class="card-desc">Scrum, Kanban, sprints, user stories. Le vocabulaire indispensable pour postuler chez une EdTech ou travailler avec une équipe produit.</div>
+        <div class="card-meta">
+          <span class="meta-tag">Scrum</span>
+          <span class="meta-tag">Kanban</span>
+          <span class="meta-tag">user stories</span>
+        </div>
+        <a href="https://openclassrooms.com/fr/courses/4296701-gerez-un-projet-digital-avec-une-methodologie-en-cascade" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="google-ux">
+        <div class="card-top">
+          <span class="card-icon">🎯</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Google UX Design Certificate</div>
+        <div class="card-platform">Coursera — Anglais — Auditable gratuitement</div>
+        <div class="card-desc">7 cours sur la conception UX. Auditer (sans payer) donne accès à tout le contenu. Figma inclus. Justifie tes choix d'interface avec une méthode.</div>
+        <div class="card-meta">
+          <span class="meta-tag">UX research</span>
+          <span class="meta-tag">Figma</span>
+          <span class="meta-tag">wireframes</span>
+        </div>
+        <a href="https://www.coursera.org/professional-certificates/google-ux-design" target="_blank" class="card-link">Ouvrir le cours →</a>
+      </div>
+
+      <div class="card" data-id="psm">
+        <div class="card-top">
+          <span class="card-icon">🏅</span>
+          <button class="card-check" onclick="toggleCard(this)" title="Marquer comme terminé">✓</button>
+        </div>
+        <div class="card-title">Certification PSM I (Scrum Master)</div>
+        <div class="card-platform">Scrum.org — ~150€ — Reconnu</div>
+        <div class="card-desc">Certification internationale reconnue. À passer quand tu vises un poste Product Owner ou Chef de projet. Prépare avec le Scrum Guide gratuit sur scrum.org.</div>
+        <div class="card-meta">
+          <span class="meta-tag">certification</span>
+          <span class="meta-tag">optionnel</span>
+          <span class="meta-tag">LinkedIn</span>
+        </div>
+        <a href="https://www.scrum.org/assessments/professional-scrum-master-i-certification" target="_blank" class="card-link">En savoir plus →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RECAP COMPETENCES -->
+  <div class="recap">
+    <h2>📊 Compétences visées à l'issue du plan</h2>
+    <div class="recap-grid">
+      <div class="recap-item">
+        <span class="recap-label">Git / GitHub</span>
+        <div class="recap-bar-bg"><div class="recap-bar-fill" style="width:0%; background: var(--c1);" data-target="90"></div></div>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">HTML / CSS</span>
+        <div class="recap-bar-bg"><div class="recap-bar-fill" style="width:0%; background: var(--c2);" data-target="80"></div></div>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">JavaScript</span>
+        <div class="recap-bar-bg"><div class="recap-bar-fill" style="width:0%; background: var(--c3);" data-target="70"></div></div>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">Gestion de projet Agile</span>
+        <div class="recap-bar-bg"><div class="recap-bar-fill" style="width:0%; background: var(--c4);" data-target="75"></div></div>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">UX Design</span>
+        <div class="recap-bar-bg"><div class="recap-bar-fill" style="width:0%; background: var(--c5);" data-target="60"></div></div>
+      </div>
+      <div class="recap-item">
+        <span class="recap-label">Portfolio public</span>
+        <div class="recap-bar-bg"><div class="recap-bar-fill" style="width:0%; background: var(--c1);" data-target="100"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>💡 Rappel stratégique :</strong> tu codes déjà des projets Firebase multijoueurs complexes. Le vrai gain ici n'est pas d'apprendre from scratch — c'est de <strong>structurer ce que tu sais déjà</strong> et de le rendre visible. Phase 1 (portfolio en ligne) = ROI maximal immédiat. Le reste suit naturellement.
+  </div>
+
+</main>
+
+<script>
+  // ── PERSIST STATE ──
+  const STATE_KEY = 'gp-formation-v1';
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STATE_KEY)) || {}; }
+    catch { return {}; }
+  }
+
+  function saveState(state) {
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+  }
+
+  // ── TOGGLE CARD ──
+  function toggleCard(btn) {
+    btn.classList.toggle('checked');
+    const card = btn.closest('.card');
+    card.classList.toggle('done');
+    const id = card.dataset.id;
+    const state = loadState();
+    state[id] = btn.classList.contains('checked');
+    saveState(state);
+    updateProgress();
+  }
+
+  // ── PROGRESS ──
+  function updateProgress() {
+    const cards = document.querySelectorAll('.card');
+    const done = document.querySelectorAll('.card.done').length;
+    const pct = Math.round((done / cards.length) * 100);
+    document.getElementById('gp-number').textContent = pct + '%';
+    document.getElementById('gp-fill').style.width = pct + '%';
+  }
+
+  // ── RESTORE STATE ──
+  function restoreState() {
+    const state = loadState();
+    document.querySelectorAll('.card').forEach(card => {
+      const id = card.dataset.id;
+      if (state[id]) {
+        card.classList.add('done');
+        card.querySelector('.card-check').classList.add('checked');
+      }
+    });
+    updateProgress();
+  }
+
+  // ── ANIMATE BARS ──
+  function animateBars() {
+    document.querySelectorAll('.recap-bar-fill').forEach(bar => {
+      const target = bar.dataset.target;
+      setTimeout(() => { bar.style.width = target + '%'; }, 300);
+    });
+  }
+
+  // ── INIT ──
+  restoreState();
+  animateBars();
+</script>
+</body>
+</html>
